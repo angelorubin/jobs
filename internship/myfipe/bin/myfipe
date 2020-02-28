@@ -2,6 +2,10 @@
 
 
 // run the CLI with the current process arguments
-require('../src/cli').run(process.argv)
+const {
+  run
+} = require('../src/cli')
 
+// console.log(process.argv)
 
+run(process.argv)
