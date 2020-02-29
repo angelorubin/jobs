@@ -3,10 +3,10 @@ const { strings } = require('gluegun')
 module.exports = {
   name: 'type',
   alias: 'search',
-  description: 'Pesquisar o preço médio de venda de um veículo no Brasil',
+  description: 'Pesquisar o preço médio de venda de veículos no Brasil',
   run: async toolbox => {
     const { getBrands, getModels, print, prompt } = toolbox
-    const { toLowerCase, startCase, startsWith } = strings
+    const { trim, lowerCase, startCase, startsWith } = strings
 
     /**
      * Vehicules Types
@@ -24,14 +24,14 @@ module.exports = {
 
     const { type } = resultType
 
-    print.debug(type)
+    // print.debug(type)
 
     /**
      * Vehicules Brands (Marcas)
      */
-    const { ok, data } = await getBrands(type)
+    const { ok, data: brands } = await getBrands(type)
 
-    // const brands = data.map(data => data.nome)
+    // const brandName = brands.map(brand => brand.nome)
     // const codes = data.map(data => data.codigo)
 
     // print.debug(data)
@@ -57,16 +57,22 @@ module.exports = {
 
     // console.log(startCase(resultBrand.brands))
 
-    const searchedBrand = data.filter(
-      data => data.nome === startCase(resultBrand.brand)
-    )
+    const brandFound = brands.filter(brand => {
+      const regexp = new RegExp(`${resultBrand.brand}`, 'g')
+      return regexp.test(brand.nome)
+    })
 
-    print.debug(searchedBrand)
+    print.debug(brandFound)
+
+    // const toLowerCase = removeWhiteSpace.map(data => lowerCase(data))
+    // data.nome === startCase(resultBrand.brand)
+
+    // print.debug(toLowerCase)
 
     /**
      * Models (Modelos)
      */
-    const models = await getModels(resultType, resultBrand)
+    // const models = await getModels(resultType, resultBrand)
 
     // print.debug(models)
   }
